@@ -1,0 +1,21 @@
+Loading required package: survival
+Loading required package: parallel
+Loading required package: mvtnorm
+Package 'mclust' version 5.4.6
+Type 'citation("mclust")' for citing this R package in publications.
+
+Attaching package: 'mclust'
+
+The following object is masked from 'package:mvtnorm':
+
+    dmvnorm
+
+Loading required package: cluster
+Loading required package: class
+Error in file(file, ifelse(append, "a", "w")) : 
+  cannot open the connection
+Calls: write.csv -> eval.parent -> eval -> eval -> write.table -> file
+In addition: Warning message:
+In file(file, ifelse(append, "a", "w")) :
+  cannot open file '/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/propvarcov/us_sssr_0595/simulation_89.csv': No such file or directory
+Execution halted

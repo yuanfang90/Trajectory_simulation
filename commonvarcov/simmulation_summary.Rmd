@@ -1,0 +1,365 @@
+---
+title: "Trajectory Simulation Summary"
+author: "Yuan Fang"
+date: "01/27/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, comment = NULL, dpi=300)
+```
+
+```{r}
+rm(list=ls()) #empty workspace
+#load data
+library(lcmm)
+library(ggplot2)
+library(kableExtra)
+library(mclust)
+library(grid)
+library(gridExtra)
+library(ggpubr)
+library(flextable)
+library(officer)
+```
+<!-- ### Aim -->
+
+<!-- Want to test to what extend we can loose the constrain by using a mixture of linear mixed effect models that including only fixed intercept and slope, and random intercept and slope, but still can capture the variation in the dataset and get a relatively good classification accuracy. -->
+
+<!-- ### Plan -->
+
+<!--   - Simulate data from the simplest scenario: contains two groups of subjects with trajectories centered around two linear functions with different intercepts and slopes. Several cases for increasing the noise level and complexity of the data are described below.  -->
+<!--   - Fit mixture of 1- through 3-component mixture of linear mixed effect models (using lcmm) and including only a fixed intercept and slope, and random intercept and slope term in the model. Employ ICL for model selection.  -->
+<!--   - Calculate several external clustering validation measures (ARI, RI, misclassification rate, etc) comparing to the true underlying group label. Compare measures across different cases we simulated. -->
+
+### General set up: 
+
+  - Assume 14 time points grid, 4 years apart from each other: Time in study = (0,1,2,...,13)*4.
+  - Assume baseline age is 40, so Age = 40 + (0,1,2,...,13)*4.
+  - Assume true model are trajectories as functions of Age.
+  - Two groups of observation: 
+    + Group 1: n = <span style="color: red;">500</span>, mean trajectory is y = -0.15 Age + 18. 
+	  + Group 2: n = <span style="color: red;">500</span>, mean trajectory is y = -0.05 Age + 9.5.
+  - Assume random intercept and slope.
+
+### Quntify noise level in the simulation settings:
+
+  - Varying the error term variance, $\sigma_\epsilon^2$ (Sig), from small (2), to moderate (10).
+  - Varying the ratio of between-subject variation and the total variation, b/t ratio, from small ($\sim$ 33%), to moderate ($\sim$ 66%). To fufill this, enlarge the variance of random slope accordingly.
+
+### Time points selecting scheme:
+<!--   - Case 1: randomly select 11 consecutive time points out of the 14-timepoint-grid. -->
+<!--   - Case 2: randomly select 5 consecutive time points out of the 14-timepoint-grid. -->
+  - Case 3: randomly sample a “number of visits”, k, (integers between 2-11, roughly following a lognormal distribution with a median around 4), then randomly select k time points out of the 14-timepoint-grid. Note the follow-up time are not essentially long. If it happens to select a small k and consecutive time points, then the follow-up time is short.
+  - Case 4: randomly sample a “number of visits”, k, same as in case 3; randomly select 5 consecutive time points out of 14, same as in case 2. If $k\leq 5$, randomly select k time points out of the 5 pre-selected consecutive time points; if $k>5$, randomly select k time points out of the 14-timepoint-grid. Note that when k is large, the follow-up time could be long.
+
+
+### Example datasets and summary of results
+
+#### Case 3
+
+```{r}
+source("/rprojectnb2/aging-p/yuanf/NP_Trajectories_Clustering/simulation/grp_spec_varcov/balanced/simulation_summary.R")
+source("/rprojectnb2/aging-p/yuanf/NP_Trajectories_Clustering/simulation/grp_spec_varcov/fcns_5050.R")
+
+
+procid <- 7
+set.seed(20220127+procid)
+
+D.1 <- matrix(c(0.01,0.0001,0.0001,0.0002),2,2)
+formydata <- long.dat.generation(space = "unequal", follow.length = "long", varcov = D.1, sig = 2)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.31 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 3: Sig = 2, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+D.2 <- matrix(c(0.01,0.0001,0.0001,0.0009),2,2)
+formydata <- long.dat.generation(space = "unequal", follow.length = "long", varcov = D.2, sig = 2)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.32 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 3: Sig = 2, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+D.4 <- matrix(c(0.01,0.0001,0.0001,0.001),2,2)
+formydata <- long.dat.generation(space = "unequal", follow.length = "long", varcov = D.4, sig = 10)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.34 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 3: Sig = 10, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+D.5 <- matrix(c(0.01,0.0001,0.0001,0.004),2,2)
+formydata <- long.dat.generation(space = "unequal", follow.length = "long", varcov = D.5, sig = 10)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.35 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 3: Sig = 10, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+```
+
+```{r}
+panelcase3 <- ggarrange(trajplot.31+theme(plot.title = element_text(size=8)),trajplot.32+theme(plot.title = element_text(size=8)),trajplot.34+theme(plot.title = element_text(size=8)),trajplot.35+theme(plot.title = element_text(size=8)),ncol=2,nrow=2)
+panelcase3
+```
+
+  - Number of times that BIC and ICL select the 2-component model
+  
+```{r, fig.height=3}
+par(mfrow= c(1,2))
+plot(c3.bic.select~as.numeric(simulations),type="b",axes = FALSE,ylim=c(0,100),xlab = "simulations", ylab = "# of BIC selected 2 in case 3")
+axis(side=1,at=as.numeric(simulations),labels=simulations)
+axis(side=2,at=c(0,20,40,60,80,100), labels = c(0,20,40,60,80,100))
+
+plot(c3.icl.select~as.numeric(simulations),type="b",axes = FALSE,ylim=c(0,100),xlab = "simulations", ylab = "# of ICL selected 2 in case 3")
+axis(side=1,at=as.numeric(simulations),labels=simulations)
+axis(side=2,at=c(0,20,40,60,80,100), labels = c(0,20,40,60,80,100))
+par(mfrow=c(1,1))
+```
+  
+  - ARI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c3.vio.ari
+```
+
+  - RI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c3.vio.ri
+```
+
+  - MCR calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c3.vio.mcr
+```
+
+  - JI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c3.vio.ji
+```
+
+  - FMI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c3.vio.fmi
+```
+
+  - Parameter estimation
+
+```{r}
+c3_res_sum <- matrix(nrow = 5, ncol=12)
+c3_res_sum <- data.frame(c3_res_sum)
+#sssr
+c3_res_sum[,1] <- round(sssr_pars[c(1:4,8)],2)
+c3_res_sum[,2] <- paste0(round(colMeans(c3.par$sssr.par,na.rm=T),2)," (",round(apply(c3.par$sssr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c3.par$sssr.par[,c(1:5)],1,function(x){abs(x-sssr_pars[c(1:5)])})
+c3_res_sum[c(1:5),3] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#ssmr
+c3_res_sum[,4] <- round(ssmr_pars[c(1:4,8)],2)
+c3_res_sum[,5] <- paste0(round(colMeans(c3.par$ssmr.par,na.rm=T),2)," (",round(apply(c3.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c3.par$ssmr.par[,c(1:5)],1,function(x){abs(x-ssmr_pars[c(1:5)])})
+c3_res_sum[c(1:5),6] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#mssr
+c3_res_sum[,7] <- round(mssr_pars[c(1:4,8)],2)
+c3_res_sum[,8] <- paste0(round(colMeans(c3.par$mssr.par,na.rm=T),2)," (",round(apply(c3.par$mssr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c3.par$mssr.par[,c(1:5)],1,function(x){abs(x-mssr_pars[c(1:5)])})
+c3_res_sum[c(1:5),9] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#msmr
+c3_res_sum[,10] <- round(msmr_pars[c(1:4,8)],2)
+c3_res_sum[,11] <- paste0(round(colMeans(c3.par$msmr.par,na.rm=T),2)," (",round(apply(c3.par$msmr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c3.par$msmr.par[,c(1:5)],1,function(x){abs(x-msmr_pars[c(1:5)])})
+c3_res_sum[c(1:5),12] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+```
+
+```{r}
+std_border = fp_border(color="orange")
+
+pars <- c("intercept class 1","intercept class 2", "slope class 1", "slope class 2", "sigma")
+c3_res_sum.1 <- data.frame(parameter = pars, c3_res_sum[,1:6])
+c3_res_sum.2 <- data.frame(parameter = pars, c3_res_sum[,7:12])
+
+ft1 <- flextable(c3_res_sum.1) %>%
+  set_header_labels(X1="\u03B8",X2=paste("\u03D1","mean (sd)"),X3=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"),X4="\u03B8",X5=paste("\u03D1","mean (sd)"),X6=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)")) %>%
+  add_header_row(values = c(" ","sssr","sssr","sssr","ssmr","ssmr","ssmr")) %>%
+  theme_vanilla( ) %>%
+  autofit(add_w = 1,part = "all") %>%
+  align(align = "center", part = "all")%>% 
+  align(j=1,align = "left", part = "all") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header")%>%
+  vline(j = c(1,4),border = std_border)
+ft1
+
+ft2 <- flextable(c3_res_sum.2) %>%
+  set_header_labels(X7="\u03B8",X8=paste("\u03D1","mean (sd)"),X9=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"),X10="\u03B8",X11=paste("\u03D1","mean (sd)"),X12=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"))%>%
+  add_header_row(values = c(" ","mssr","mssr","mssr","msmr","msmr","msmr")) %>%
+  theme_vanilla( ) %>%
+  autofit(add_w = 1,part = "all") %>%
+  align(align = "center", part = "all")%>% 
+  align(j=1,align = "left", part = "all") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header")%>%
+  vline(j = c(1,4),border = std_border)
+ft2
+
+```
+
+#### Case 4
+
+```{r}
+formydata <- long.dat.generation(space = "unequal", follow.length = "short", varcov = D.1, sig = 2)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.41 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 4: Sig = 2, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+formydata <- long.dat.generation(space = "unequal", follow.length = "short", varcov = D.2, sig = 2)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.42 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 4: Sig = 2, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+formydata <- long.dat.generation(space = "unequal", follow.length = "short", varcov = D.4, sig = 10)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.44 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 4: Sig = 10, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+
+formydata <- long.dat.generation(space = "unequal", follow.length = "short", varcov = D.5, sig = 10)
+mydata <- formydata$dat
+true_lab <- formydata$true_lab
+trajplot.45 <- ggplot(data=mydata,aes(x=age, y=y, group=id))+ ggtitle(paste0("Case 4: Sig = 10, b/t ratio = ",round(formydata$bwtot_ratio,2))) + 
+  geom_path(data=mydata[which(mydata$class==2),],colour="orange",na.rm = TRUE) +
+  geom_path(data=mydata[which(mydata$class==1),],colour="blue",na.rm = TRUE)
+```
+
+```{r}
+panelcase4 <- ggarrange(trajplot.41+theme(plot.title = element_text(size=8)),trajplot.42+theme(plot.title = element_text(size=8)),trajplot.44+theme(plot.title = element_text(size=8)),trajplot.45+theme(plot.title = element_text(size=8)),ncol=2,nrow=2)
+panelcase4
+```
+
+  - Number of times that BIC and ICL select the 2-component model
+  
+```{r, fig.height=3}
+par(mfrow= c(1,2))
+plot(c4.bic.select~as.numeric(simulations),type="b",axes = FALSE,ylim=c(0,100),xlab = "simulations", ylab = "# of BIC selected 2 in case 4")
+axis(side=1,at=as.numeric(simulations),labels=simulations)
+axis(side=2,at=c(0,20,40,60,80,100), labels = c(0,20,40,60,80,100))
+
+plot(c4.icl.select~as.numeric(simulations),type="b",axes = FALSE,ylim=c(0,100),xlab = "simulations", ylab = "# of ICL selected 2 in case 4")
+axis(side=1,at=as.numeric(simulations),labels=simulations)
+axis(side=2,at=c(0,20,40,60,80,100), labels = c(0,20,40,60,80,100))
+par(mfrow=c(1,1))
+```
+  
+  - ARI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c4.vio.ari
+```
+
+  - RI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c4.vio.ri
+```
+
+  - MCR calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c4.vio.mcr
+```
+
+  - JI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c4.vio.ji
+```
+
+  - FMI calculated for every datasets in each simulation. 
+  
+```{r, fig.height=3}
+c4.vio.fmi
+```
+
+  - Parameter estimation
+
+```{r}
+c4_res_sum <- matrix(nrow = 5, ncol=12)
+c4_res_sum <- data.frame(c4_res_sum)
+#sssr
+c4_res_sum[,1] <- round(sssr_pars[c(1:4,8)],2)
+c4_res_sum[,2] <- paste0(round(colMeans(c4.par$sssr.par,na.rm=T),2)," (",round(apply(c4.par$sssr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c4.par$sssr.par[,c(1:5)],1,function(x){abs(x-sssr_pars[c(1:5)])})
+c4_res_sum[c(1:5),3] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#ssmr
+c4_res_sum[,4] <- round(ssmr_pars[c(1:4,8)],2)
+c4_res_sum[,5] <- paste0(round(colMeans(c4.par$ssmr.par,na.rm=T),2)," (",round(apply(c4.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c4.par$ssmr.par[,c(1:5)],1,function(x){abs(x-ssmr_pars[c(1:5)])})
+c4_res_sum[c(1:5),6] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#mssr
+c4_res_sum[,7] <- round(mssr_pars[c(1:4,8)],2)
+c4_res_sum[,8] <- paste0(round(colMeans(c4.par$mssr.par,na.rm=T),2)," (",round(apply(c4.par$mssr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c4.par$mssr.par[,c(1:5)],1,function(x){abs(x-mssr_pars[c(1:5)])})
+c4_res_sum[c(1:5),9] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+
+#msmr
+c4_res_sum[,10] <- round(msmr_pars[c(1:4,8)],2)
+c4_res_sum[,11] <- paste0(round(colMeans(c4.par$msmr.par,na.rm=T),2)," (",round(apply(c4.par$msmr.par,2,function(x){sd(x,na.rm=T)}),2),")")
+
+dist1 <- apply(c4.par$msmr.par[,c(1:5)],1,function(x){abs(x-msmr_pars[c(1:5)])})
+c4_res_sum[c(1:5),12] <- paste0(round(rowMeans(dist1,na.rm=T),2)," (",round(apply(dist1,1,function(x){sd(x,na.rm=T)}),2),")")
+```
+
+```{r}
+std_border = fp_border(color="orange")
+
+pars <- c("intercept class 1","intercept class 2", "slope class 1", "slope class 2", "sigma")
+c4_res_sum.1 <- data.frame(parameter = pars, c4_res_sum[,1:6])
+c4_res_sum.2 <- data.frame(parameter = pars, c4_res_sum[,7:12])
+
+ft1 <- flextable(c4_res_sum.1) %>%
+  set_header_labels(X1="\u03B8",X2=paste("\u03D1","mean (sd)"),X3=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"),X4="\u03B8",X5=paste("\u03D1","mean (sd)"),X6=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)")) %>%
+  add_header_row(values = c(" ","sssr","sssr","sssr","ssmr","ssmr","ssmr")) %>%
+  theme_vanilla( ) %>%
+  autofit(add_w = 1,part = "all") %>%
+  align(align = "center", part = "all")%>% 
+  align(j=1,align = "left", part = "all") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header")%>%
+  vline(j = c(1,4),border = std_border)
+ft1
+
+ft2 <- flextable(c4_res_sum.2) %>%
+  set_header_labels(X7="\u03B8",X8=paste("\u03D1","mean (sd)"),X9=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"),X10="\u03B8",X11=paste("\u03D1","mean (sd)"),X12=paste0("|","\u03B8","-","\u03D1","|"," mean (sd)"))%>%
+  add_header_row(values = c(" ","mssr","mssr","mssr","msmr","msmr","msmr")) %>%
+  theme_vanilla( ) %>%
+  autofit(add_w = 1,part = "all") %>%
+  align(align = "center", part = "all")%>% 
+  align(j=1,align = "left", part = "all") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header")%>%
+  vline(j = c(1,4),border = std_border)
+ft2
+```
+

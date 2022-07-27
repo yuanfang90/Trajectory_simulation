@@ -1,0 +1,12 @@
+#!/bin/bash -l 
+
+#$ -P aging-p
+#$ -l h_rt=6:00:00
+#$ -N l_5050_mssr
+#$ -j y
+#$ -o logs
+
+#$ -t 1-100
+
+module load R/4.0.2
+Rscript ul_mssr_5050.R
