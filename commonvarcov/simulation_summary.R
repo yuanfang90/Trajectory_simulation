@@ -2,15 +2,15 @@
 library(ggplot2)
 
 #### Combine result from each dataset into one matrix, do this for all simulations
-source("/rprojectnb2/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/result_comb.R")
+source("./commonvarcov/result_comb.R")
 
 # beta_trans_1 <- c(7.5,-1.5)
 # beta_trans_2 <- c(6,-0.5)
 
-sssr_pars <- c(7.5,6,-1.5,-0.5,1.004,0.141,0.02,sqrt(2),0.32,0.32)
-ssmr_pars <- c(7.5,6,-1.5,-0.5,4.434,0.631,0.09,sqrt(2),0.68,0.68)
-mssr_pars <- c(7.5,6,-1.5,-0.5,4.924,0.701,0.1,sqrt(10),0.32,0.32)
-msmr_pars <- c(7.5,6,-1.5,-0.5,19.624,2.801,0.4,sqrt(10),0.65,0.65)
+sssr_pars <- c(7.5,6,-1.5,-0.5,1.004,0.141,0.02,sqrt(2),0.32,0.32,2,2)
+ssmr_pars <- c(7.5,6,-1.5,-0.5,4.434,0.631,0.09,sqrt(2),0.68,0.68,2,2)
+mssr_pars <- c(7.5,6,-1.5,-0.5,4.924,0.701,0.1,sqrt(10),0.32,0.32,10,10)
+msmr_pars <- c(7.5,6,-1.5,-0.5,19.624,2.801,0.4,sqrt(10),0.65,0.65,10,10)
 
 
 simnames <- c("sssr","ssmr","mssr","msmr")
@@ -18,53 +18,53 @@ simulations <- factor(simnames, levels = simnames)
 
 ##########################################################
 #### read in example datasets
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_sssr_5050/simulation_7.RData")
+load("./commonvarcov/ul_sssr_5050/simulation_7.RData")
 exdat_ul_sssr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_sssr_2080/simulation_7.RData")
+load("./commonvarcov/ul_sssr_2080/simulation_7.RData")
 exdat_ul_sssr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_sssr_0595/simulation_7.RData")
+load("./commonvarcov/ul_sssr_0595/simulation_7.RData")
 exdat_ul_sssr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_ssmr_5050/simulation_7.RData")
+load("./commonvarcov/ul_ssmr_5050/simulation_7.RData")
 exdat_ul_ssmr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_ssmr_2080/simulation_7.RData")
+load("./commonvarcov/ul_ssmr_2080/simulation_7.RData")
 exdat_ul_ssmr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_ssmr_0595/simulation_7.RData")
+load("./commonvarcov/ul_ssmr_0595/simulation_7.RData")
 exdat_ul_ssmr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_mssr_5050/simulation_7.RData")
+load("./commonvarcov/ul_mssr_5050/simulation_7.RData")
 exdat_ul_mssr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_mssr_2080/simulation_7.RData")
+load("./commonvarcov/ul_mssr_2080/simulation_7.RData")
 exdat_ul_mssr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_mssr_0595/simulation_7.RData")
+load("./commonvarcov/ul_mssr_0595/simulation_7.RData")
 exdat_ul_mssr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_msmr_5050/simulation_7.RData")
+load("./commonvarcov/ul_msmr_5050/simulation_7.RData")
 exdat_ul_msmr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_msmr_2080/simulation_7.RData")
+load("./commonvarcov/ul_msmr_2080/simulation_7.RData")
 exdat_ul_msmr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/ul_msmr_0595/simulation_7.RData")
+load("./commonvarcov/ul_msmr_0595/simulation_7.RData")
 exdat_ul_msmr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_sssr_5050/simulation_7.RData")
+load("./commonvarcov/us_sssr_5050/simulation_7.RData")
 exdat_us_sssr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_sssr_2080/simulation_7.RData")
+load("./commonvarcov/us_sssr_2080/simulation_7.RData")
 exdat_us_sssr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_sssr_0595/simulation_7.RData")
+load("./commonvarcov/us_sssr_0595/simulation_7.RData")
 exdat_us_sssr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_ssmr_5050/simulation_7.RData")
+load("./commonvarcov/us_ssmr_5050/simulation_7.RData")
 exdat_us_ssmr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_ssmr_2080/simulation_7.RData")
+load("./commonvarcov/us_ssmr_2080/simulation_7.RData")
 exdat_us_ssmr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_ssmr_0595/simulation_7.RData")
+load("./commonvarcov/us_ssmr_0595/simulation_7.RData")
 exdat_us_ssmr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_mssr_5050/simulation_7.RData")
+load("./commonvarcov/us_mssr_5050/simulation_7.RData")
 exdat_us_mssr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_mssr_2080/simulation_7.RData")
+load("./commonvarcov/us_mssr_2080/simulation_7.RData")
 exdat_us_mssr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_mssr_0595/simulation_7.RData")
+load("./commonvarcov/us_mssr_0595/simulation_7.RData")
 exdat_us_mssr_0595 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_msmr_5050/simulation_7.RData")
+load("./commonvarcov/us_msmr_5050/simulation_7.RData")
 exdat_us_msmr_5050 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_msmr_2080/simulation_7.RData")
+load("./commonvarcov/us_msmr_2080/simulation_7.RData")
 exdat_us_msmr_2080 <- mydata.1
-load("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_msmr_0595/simulation_7.RData")
+load("./commonvarcov/us_msmr_0595/simulation_7.RData")
 exdat_us_msmr_0595 <- mydata.1
 
 ###########################################################
@@ -153,13 +153,14 @@ ul5050.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 ul5050.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- ul_5050_ls[[s]][,c(1:8,18:19)]
+  forpar <- ul_5050_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   ul5050.par[[ind]] <- na.omit(forpar)
 }
 names(ul5050.par) <- paste0(simnames,".par")
@@ -250,13 +251,14 @@ ul2080.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 ul2080.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- ul_2080_ls[[s]][,c(1:8,18:19)]
+  forpar <- ul_2080_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   ul2080.par[[ind]] <- na.omit(forpar)
 }
 names(ul2080.par) <- paste0(simnames,".par")
@@ -347,13 +349,14 @@ ul0595.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 ul0595.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- ul_0595_ls[[s]][,c(1:8,18:19)]
+  forpar <- ul_0595_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   ul0595.par[[ind]] <- na.omit(forpar)
 }
 names(ul0595.par) <- paste0(simnames,".par")
@@ -444,13 +447,14 @@ us5050.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 us5050.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- us_5050_ls[[s]][,c(1:8,18:19)]
+  forpar <- us_5050_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   us5050.par[[ind]] <- na.omit(forpar)
 }
 names(us5050.par) <- paste0(simnames,".par")
@@ -541,13 +545,14 @@ us2080.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 us2080.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- us_2080_ls[[s]][,c(1:8,18:19)]
+  forpar <- us_2080_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   us2080.par[[ind]] <- na.omit(forpar)
 }
 names(us2080.par) <- paste0(simnames,".par")
@@ -638,13 +643,14 @@ us0595.box.ji <- ggplot(JI, aes(x=sim, y=ji, fill=sim)) +
 us0595.par <- list()
 for(s in simnames){
   ind <- which(simnames==s)
-  forpar <- us_0595_ls[[s]][,c(1:8,18:19)]
+  forpar <- us_0595_ls[[s]][,c(1:8,18:20)]
   ## need to order the first 4 columns because classes may flipped
   for(r in seq_along(forpar[,1])){
     row <- forpar[r,]
-    ord <- c(order(row[3:4]),order(row[3:4])+2,5:10)
+    ord <- c(order(row[3:4]),order(row[3:4])+2,5:11)
     forpar[r,] <- row[ord]
   }
+  forpar[,12] <- (forpar[,8])^2
   us0595.par[[ind]] <- na.omit(forpar)
 }
 names(us0595.par) <- paste0(simnames,".par")
@@ -653,15 +659,15 @@ names(us0595.par) <- paste0(simnames,".par")
 #### Parameter estimation summary ####################
 ######################################################
 #### ul5050
-ul5050_res_sum <- matrix(nrow = 10, ncol=12)
+ul5050_res_sum <- matrix(nrow = 12, ncol=12)
 ul5050_res_sum <- data.frame(ul5050_res_sum)
 
 #sssr
 ul5050_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 ul5050_res_sum[,2] <- paste0(formatC(colMeans(ul5050.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul5050.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul5050.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-ul5050_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul5050.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+ul5050_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul5050.par$sssr.par[,1])){
@@ -676,8 +682,8 @@ ul5050_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul5050_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 ul5050_res_sum[,5] <- paste0(formatC(colMeans(ul5050.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul5050.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul5050.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-ul5050_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul5050.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+ul5050_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul5050.par$ssmr.par[,1])){
@@ -693,8 +699,8 @@ ul5050_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul5050_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 ul5050_res_sum[,8] <- paste0(formatC(colMeans(ul5050.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul5050.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul5050.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-ul5050_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul5050.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+ul5050_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul5050.par$mssr.par[,1])){
@@ -709,8 +715,8 @@ ul5050_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul5050_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 ul5050_res_sum[,11] <- paste0(formatC(colMeans(ul5050.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul5050.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul5050.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-ul5050_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul5050.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+ul5050_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul5050.par$msmr.par[,1])){
@@ -722,15 +728,15 @@ for(i in seq_along(ul5050.par$msmr.par[,1])){
 ul5050_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
 #### ul2080
-ul2080_res_sum <- matrix(nrow = 10, ncol=12)
+ul2080_res_sum <- matrix(nrow = 12, ncol=12)
 ul2080_res_sum <- data.frame(ul2080_res_sum)
 
 #sssr
 ul2080_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 ul2080_res_sum[,2] <- paste0(formatC(colMeans(ul2080.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul2080.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul2080.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-ul2080_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul2080.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+ul2080_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul2080.par$sssr.par[,1])){
@@ -745,8 +751,8 @@ ul2080_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul2080_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 ul2080_res_sum[,5] <- paste0(formatC(colMeans(ul2080.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul2080.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul2080.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-ul2080_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul2080.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+ul2080_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul2080.par$ssmr.par[,1])){
@@ -762,8 +768,8 @@ ul2080_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul2080_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 ul2080_res_sum[,8] <- paste0(formatC(colMeans(ul2080.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul2080.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul2080.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-ul2080_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul2080.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+ul2080_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul2080.par$mssr.par[,1])){
@@ -778,8 +784,8 @@ ul2080_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul2080_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 ul2080_res_sum[,11] <- paste0(formatC(colMeans(ul2080.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul2080.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul2080.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-ul2080_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul2080.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+ul2080_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul2080.par$msmr.par[,1])){
@@ -791,15 +797,15 @@ for(i in seq_along(ul2080.par$msmr.par[,1])){
 ul2080_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
 #### ul0595
-ul0595_res_sum <- matrix(nrow = 10, ncol=12)
+ul0595_res_sum <- matrix(nrow = 12, ncol=12)
 ul0595_res_sum <- data.frame(ul0595_res_sum)
 
 #sssr
 ul0595_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 ul0595_res_sum[,2] <- paste0(formatC(colMeans(ul0595.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul0595.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul0595.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-ul0595_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul0595.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+ul0595_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul0595.par$sssr.par[,1])){
@@ -814,8 +820,8 @@ ul0595_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul0595_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 ul0595_res_sum[,5] <- paste0(formatC(colMeans(ul0595.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul0595.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul0595.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-ul0595_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul0595.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+ul0595_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul0595.par$ssmr.par[,1])){
@@ -831,8 +837,8 @@ ul0595_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul0595_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 ul0595_res_sum[,8] <- paste0(formatC(colMeans(ul0595.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul0595.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul0595.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-ul0595_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul0595.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+ul0595_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul0595.par$mssr.par[,1])){
@@ -847,8 +853,8 @@ ul0595_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 ul0595_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 ul0595_res_sum[,11] <- paste0(formatC(colMeans(ul0595.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(ul0595.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(ul0595.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-ul0595_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(ul0595.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+ul0595_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(ul0595.par$msmr.par[,1])){
@@ -860,15 +866,15 @@ for(i in seq_along(ul0595.par$msmr.par[,1])){
 ul0595_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
 #### us5050
-us5050_res_sum <- matrix(nrow = 10, ncol=12)
+us5050_res_sum <- matrix(nrow = 12, ncol=12)
 us5050_res_sum <- data.frame(us5050_res_sum)
 
 #sssr
 us5050_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 us5050_res_sum[,2] <- paste0(formatC(colMeans(us5050.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us5050.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us5050.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-us5050_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us5050.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+us5050_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us5050.par$sssr.par[,1])){
@@ -883,8 +889,8 @@ us5050_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us5050_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 us5050_res_sum[,5] <- paste0(formatC(colMeans(us5050.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us5050.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us5050.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-us5050_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us5050.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+us5050_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us5050.par$ssmr.par[,1])){
@@ -900,8 +906,8 @@ us5050_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us5050_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 us5050_res_sum[,8] <- paste0(formatC(colMeans(us5050.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us5050.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us5050.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-us5050_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us5050.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+us5050_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us5050.par$mssr.par[,1])){
@@ -916,8 +922,8 @@ us5050_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us5050_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 us5050_res_sum[,11] <- paste0(formatC(colMeans(us5050.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us5050.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us5050.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-us5050_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us5050.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+us5050_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us5050.par$msmr.par[,1])){
@@ -929,15 +935,15 @@ for(i in seq_along(us5050.par$msmr.par[,1])){
 us5050_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
 #### us2080
-us2080_res_sum <- matrix(nrow = 10, ncol=12)
+us2080_res_sum <- matrix(nrow = 12, ncol=12)
 us2080_res_sum <- data.frame(us2080_res_sum)
 
 #sssr
 us2080_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 us2080_res_sum[,2] <- paste0(formatC(colMeans(us2080.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us2080.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us2080.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-us2080_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us2080.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+us2080_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us2080.par$sssr.par[,1])){
@@ -952,8 +958,8 @@ us2080_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us2080_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 us2080_res_sum[,5] <- paste0(formatC(colMeans(us2080.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us2080.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us2080.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-us2080_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us2080.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+us2080_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us2080.par$ssmr.par[,1])){
@@ -969,8 +975,8 @@ us2080_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us2080_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 us2080_res_sum[,8] <- paste0(formatC(colMeans(us2080.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us2080.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us2080.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-us2080_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us2080.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+us2080_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us2080.par$mssr.par[,1])){
@@ -985,8 +991,8 @@ us2080_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us2080_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 us2080_res_sum[,11] <- paste0(formatC(colMeans(us2080.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us2080.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us2080.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-us2080_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us2080.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+us2080_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us2080.par$msmr.par[,1])){
@@ -998,15 +1004,15 @@ for(i in seq_along(us2080.par$msmr.par[,1])){
 us2080_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
 #### us0595
-us0595_res_sum <- matrix(nrow = 10, ncol=12)
+us0595_res_sum <- matrix(nrow = 12, ncol=12)
 us0595_res_sum <- data.frame(us0595_res_sum)
 
 #sssr
 us0595_res_sum[,1] <- formatC(sssr_pars,digits=2,format="f")
 us0595_res_sum[,2] <- paste0(formatC(colMeans(us0595.par$sssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us0595.par$sssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us0595.par$sssr.par[,c(1:4,8:10)],1,function(x){abs(x-sssr_pars[c(1:4,8:10)])})
-us0595_res_sum[c(1:4,8:10),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us0595.par$sssr.par[,c(1:4,8:12)],1,function(x){abs(x-sssr_pars[c(1:4,8:12)])})
+us0595_res_sum[c(1:4,8:12),3] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us0595.par$sssr.par[,1])){
@@ -1021,8 +1027,8 @@ us0595_res_sum[6,3] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us0595_res_sum[,4] <- formatC(ssmr_pars,digits=2,format="f")
 us0595_res_sum[,5] <- paste0(formatC(colMeans(us0595.par$ssmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us0595.par$ssmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us0595.par$ssmr.par[,c(1:4,8:10)],1,function(x){abs(x-ssmr_pars[c(1:4,8:10)])})
-us0595_res_sum[c(1:4,8:10),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us0595.par$ssmr.par[,c(1:4,8:12)],1,function(x){abs(x-ssmr_pars[c(1:4,8:12)])})
+us0595_res_sum[c(1:4,8:12),6] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us0595.par$ssmr.par[,1])){
@@ -1038,8 +1044,8 @@ us0595_res_sum[6,6] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us0595_res_sum[,7] <- formatC(mssr_pars,digits=2,format="f")
 us0595_res_sum[,8] <- paste0(formatC(colMeans(us0595.par$mssr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us0595.par$mssr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us0595.par$mssr.par[,c(1:4,8:10)],1,function(x){abs(x-mssr_pars[c(1:4,8:10)])})
-us0595_res_sum[c(1:4,8:10),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us0595.par$mssr.par[,c(1:4,8:12)],1,function(x){abs(x-mssr_pars[c(1:4,8:12)])})
+us0595_res_sum[c(1:4,8:12),9] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us0595.par$mssr.par[,1])){
@@ -1054,8 +1060,8 @@ us0595_res_sum[6,9] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f"),"
 us0595_res_sum[,10] <- formatC(msmr_pars,digits=2,format="f")
 us0595_res_sum[,11] <- paste0(formatC(colMeans(us0595.par$msmr.par,na.rm=T),digits=2,format="f")," (",formatC(apply(us0595.par$msmr.par,2,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
-dist1 <- apply(us0595.par$msmr.par[,c(1:4,8:10)],1,function(x){abs(x-msmr_pars[c(1:4,8:10)])})
-us0595_res_sum[c(1:4,8:10),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
+dist1 <- apply(us0595.par$msmr.par[,c(1:4,8:12)],1,function(x){abs(x-msmr_pars[c(1:4,8:12)])})
+us0595_res_sum[c(1:4,8:12),12] <- paste0(formatC(rowMeans(dist1,na.rm=T),digits=2,format="f")," (",formatC(apply(dist1,1,function(x){sd(x,na.rm=T)}),digits=2,format="f"),")")
 
 dist2 <- c()
 for(i in seq_along(us0595.par$msmr.par[,1])){
@@ -1066,5 +1072,4 @@ for(i in seq_along(us0595.par$msmr.par[,1])){
 }
 us0595_res_sum[6,12] <- paste0(formatC(mean(dist2,na.rm=T),digits=2,format="f")," (",formatC(sd(dist2,na.rm=T),digits=2,format="f"),")")
 
-
-save.image("/rprojectnb2/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/simulation_results.RData")
+# save.image("./commonvarcov/simulation_results.RData")

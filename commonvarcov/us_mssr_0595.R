@@ -1,5 +1,5 @@
 rm(list=ls())
-source("/rprojectnb2/aging-p/yuanf/NP_Trajectories_Clustering/simulation/functions.R")
+source("./functions.R")
 
 library(lcmm)
 library(mclust)
@@ -76,19 +76,15 @@ pprobs.correct <- mod.best$pprob[-misclassed,-c(1:2)]
 meanpprob.correct <- median(apply(pprobs.correct,1,max))
 
 if(bic.select==2|icl.select==2){
-  result <- c(hm2$best[-1],bic.select=bic.select,icl.select=icl.select,ARI=ari,MCR=mcr,RI=rand1,JI=jaccard1,FMI=folk.mal1,mean.pprob.misc=meanpprob.misclassed,mean.pprob.correct=meanpprob.correct,btr.est.hm1=btr.est.1,btr.est.best=btr.est.2)
+  result <- c(hm2$best[-1],bic.select=bic.select,icl.select=icl.select,ARI=ari,MCR=mcr,RI=rand1,JI=jaccard1,FMI=folk.mal1,mean.pprob.misc=meanpprob.misclassed,mean.pprob.correct=meanpprob.correct,btr.est.hm1=btr.est.1,btr.est.best=btr.est.2,sigma2.1)
 }else{
-  result <- c(rep(NA,length(hm2$best[-1])),bic.select=bic.select,icl.select=icl.select,ARI=ari,MCR=mcr,RI=rand1,JI=jaccard1,FMI=folk.mal1,mean.pprob.misc=meanpprob.misclassed,mean.pprob.correct=meanpprob.correct,btr.est.hm1=btr.est.1,btr.est.best=btr.est.2)
+  result <- c(rep(NA,length(hm2$best[-1])),bic.select=bic.select,icl.select=icl.select,ARI=ari,MCR=mcr,RI=rand1,JI=jaccard1,FMI=folk.mal1,mean.pprob.misc=meanpprob.misclassed,mean.pprob.correct=meanpprob.correct,btr.est.hm1=btr.est.1,btr.est.best=btr.est.2,sigma2.1)
   names(result)[1:length(hm2$best[-1])] <- names(hm2$best[-1])
 }
 
-# trajplot.2 <- ggplot(data=mydata,aes(x=age, y=y, group=id)) +
-#   geom_path(data=mydata[which(mod.best$pprob$class==2),],colour="orange",na.rm = TRUE) +
-#   geom_path(data=mydata[which(mod.best$pprob$class==1),],colour="blue",na.rm = TRUE)
-# trajplot.2
 
-filename = paste0("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_mssr_0595/simulation_",procid,".csv")
+filename = paste0("./commonvarcov/us_mssr_0595/simulation_",procid,".csv")
 write.csv(t(result),file=filename)
 
-rdname = paste0("/restricted/projectnb/aging-p/yuanf/NP_Trajectories_Clustering/simulation/commonvarcov/us_mssr_0595/simulation_",procid,".RData")
+rdname = paste0("./commonvarcov/us_mssr_0595/simulation_",procid,".RData")
 save(mydata.1,mod.best,file=rdname)
