@@ -11,4 +11,4 @@ This folder contains the code for generating the simulated datasets, the dataset
 - Each of the scenario folders contains 100 .RData file saving the dataset generated, and 100 .csv file saving the estimated parameters, estimated between-total ratio and within-subject variation by both LMM and the best selected LCMM model, and cluster validation measures calculated based on the best model selected by ICL. Notice that if ICL did not select the correct number of components (i.e. select G != 2), only cluster validation measures and estimation of between-total ratio and within-subject variation were saved, parameter estimations were setted to be NA.
 
 ## propvarcov
-This folder saved the code and files for some preliminary work simulating datasets and fitting LCMM with group-specific variance-covariance matrix structure. These results are not discussed in the manuscript.
+This folder saved the code and files for some preliminary work simulating datasets and fitting LCMM with group-specific variance-covariance matrix structure. These results are not discussed in the current manuscript and may be used for future work.
